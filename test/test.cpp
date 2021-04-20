@@ -7,10 +7,30 @@
 #include "../include/linux_parser.h"
 #include "../include/system.h"
 int main() {
-  std::string line{"abd:      123"};
-  std::stringstream ss(line);
-  std::string word1, word2, word3;
-  ss >> word1 >> word2 >> word3;
-  std::cout << word1 << " \n" << word2 << " \n" << word3 << std::endl;
-  return 0;
+  enum CPUStates {
+    kUser_ = 0,
+    kNice_,
+    kSystem_,
+    kIdle_,
+    kIOwait_,
+    kIRQ_,
+    kSoftIRQ_,
+    kSteal_,
+    kGuest_,
+    kGuestNice_
+  };
+  std::vector<int> vec;
+  vec.push_back(1);
+  vec.push_back(2);
+  vec.push_back(3);
+  std::cout << vec[kUser_] << " " << vec[kGuestNice_] << " " << vec[kSystem_]
+            << std::endl;
+  std::cout << kGuestNice_ << std::endl;
+  std::cout << vec[9] << std::endl;
+  // vec[kUser_] = 1;
+  // vec[kNice_] = 2;
+  // vec[kSystem_] = 3;
+  for (const auto ele : vec) {
+    std::cout << ele << std::endl;
+  }
 }

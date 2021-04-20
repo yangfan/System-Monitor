@@ -24,3 +24,10 @@ string Format::ElapsedTime(long seconds) {
 
   return ss.str();
 }
+
+string Format::Number(int number) {
+  std::stringstream ss;
+
+  ss << std::setw(3) << std::setfill('0') << number;
+  return ss.str();
+}
