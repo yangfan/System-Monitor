@@ -1,41 +1,50 @@
-# CppND-System-Monitor
+# System Monitor
 
-Starter code for System Monitor Project in the Object Oriented Programming Course of the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). 
+In this project, I created a simple system monitor using c++. The system monitor shows the system information and processes information.
 
-Follow along with the classroom lesson to complete the project!
+![GitHub](images/system-monitor.png)
 
-![System Monitor](images/monitor.png)
+The information is obtained from files in linux system. The path of these directories are presented in the table below.
 
-## Udacity Linux Workspace
-[Udacity](https://www.udacity.com/) provides a browser-based Linux [Workspace](https://engineering.udacity.com/creating-a-gpu-enhanced-virtual-desktop-for-udacity-497bdd91a505) for students. 
+| Info | directory path  |
+| :-----: | :-: |
+| OS | `/etc/os-release` |
+| Kernal    | `/proc/version` |
+| CPU | `/proc/stat` |
+| Memory | `/proc/meminfo`
+| Total Processes | `/proc/stat`|
+| Running Processes | `/proc/stat`|
+| Up Time | `/proc/uptime` |
 
-You are welcome to develop this project on your local machine, and you are not required to use the Udacity Workspace. However, the Workspace provides a convenient and consistent Linux development environment we encourage you to try.
+Note that the memory usage shown in this system monitor is non-cache/buffer memory.
 
-## ncurses
-[ncurses](https://www.gnu.org/software/ncurses/) is a library that facilitates text-based graphical output in the terminal. This project relies on ncurses for display output.
+The files for process information are located in `/proc/` directory. The PID is shown as the directory name in `/proc/`. 
 
-Within the Udacity Workspace, `.student_bashrc` automatically installs ncurses every time you launch the Workspace.
+| Info | directory path |
+| :----: | :-: |
+| USER | `/proc/[pid]/status`, `/etc/passwd`|
+| CPU Usage | `/proc/[pid]/stat` |
+| Memory Usaeg | `/proc/[pid]/status` |
+| Up Time | `/proc/[pid]/stat` |
+| Command | `/proc/[pid]/cmdline` |
 
-If you are not using the Workspace, install ncurses within your own Linux environment: `sudo apt install libncurses5-dev libncursesw5-dev`
+## Compiling and Running
 
-## Make
-This project uses [Make](https://www.gnu.org/software/make/). The Makefile has four targets:
-* `build` compiles the source code and generates an executable
-* `format` applies [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) to style the source code
-* `debug` compiles the source code and generates an executable, including debugging symbols
-* `clean` deletes the `build/` directory, including all of the build artifacts
+### Compiling
 
-## Instructions
+This project requires [ncurses](https://www.gnu.org/software/ncurses/) for displaying outputs. Install this library by command in terminal:
+`sudo apt install libncurses5-dev libncursesw5-dev`.
 
-1. Clone the project repository: `git clone https://github.com/udacity/CppND-System-Monitor-Project-Updated.git`
+After installation of dependencies, clone this project and create build directory in root of the project.
+`mkdir build && cd build`.
 
-2. Build the project: `make build`
+Then run `cmake ..` and `make` in `build` directory. 
 
-3. Run the resulting executable: `./build/monitor`
-![Starting System Monitor](images/starting_monitor.png)
+### Running
 
-4. Follow along with the lesson.
+The executable is in `results/` directory. To run the system monitor, move to root directory of the project and run command:
+`./results/monitor`.
 
-5. Implement the `System`, `Process`, and `Processor` classes, as well as functions within the `LinuxParser` namespace.
+## Credits
 
-6. Submit!
+Starter code for System Monitor Project in the Object Oriented Programming Course of the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
