@@ -2,7 +2,7 @@
 
 In this project, I created a simple system monitor using c++. The system monitor shows the system information and processes information.
 
-![GitHub](images/system-monitor.png)
+![GitHub](images/system_monitor.png)
 
 The information is obtained from files in linux system. The path of these directories are presented in the table below.
 
