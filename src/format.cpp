@@ -25,9 +25,20 @@ string Format::ElapsedTime(long seconds) {
   return ss.str();
 }
 
-string Format::Number(int number) {
+string Format::Number(int number, int digit) {
   std::stringstream ss;
 
-  ss << std::setw(3) << std::setfill('0') << number;
+  ss << std::setw(digit) << std::setfill(' ') << number;
   return ss.str();
+}
+
+std::string Format::NormalizeString(std::string input, size_t len) {
+  if (len > input.size()) {
+    std::string norm = input;
+    for (size_t i = 0; i < len - input.size(); i++) {
+      norm.append("_");
+    }
+    return norm;
+  }
+  return input;
 }

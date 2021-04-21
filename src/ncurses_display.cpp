@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "format.h"
+#include "process.h"
 #include "system.h"
 
 using std::string;
@@ -46,9 +47,10 @@ void NCursesDisplay::DisplaySystem(System& system, WINDOW* window) {
   wattroff(window, COLOR_PAIR(1));
   mvwprintw(window, ++row, 2,
             ("Total Processes: " + to_string(system.TotalProcesses())).c_str());
-  mvwprintw(window, ++row, 2,
-            ("Running Processes: " + Format::Number(system.RunningProcesses()))
-                .c_str());
+  mvwprintw(
+      window, ++row, 2,
+      ("Running Processes: " + Format::Number(system.RunningProcesses(), 3))
+          .c_str());
   mvwprintw(window, ++row, 2,
             ("Up Time: " + Format::ElapsedTime(system.UpTime())).c_str());
   wrefresh(window);
@@ -62,7 +64,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   int const cpu_column{19};
   int const ram_column{27};
   int const time_column{36};
-  int const command_column{47};
+  int const command_column{45};
   wattron(window, COLOR_PAIR(2));
   mvwprintw(window, ++row, pid_column, "PID");
   mvwprintw(window, row, user_column, "USER");
@@ -72,15 +74,24 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   mvwprintw(window, row, command_column, "COMMAND");
   wattroff(window, COLOR_PAIR(2));
   for (int i = 0; i < n; ++i) {
-    mvwprintw(window, ++row, pid_column, to_string(processes[i].Pid()).c_str());
-    mvwprintw(window, row, user_column, processes[i].User().c_str());
+    mvwprintw(
+        window, ++row, pid_column,
+        Format::NormalizeString(to_string(processes[i].Pid()), 6).c_str());
+    mvwprintw(window, row, user_column,
+              Format::NormalizeString(processes[i].User(), 8).c_str());
     float cpu = processes[i].CpuUtilization() * 100;
-    mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
-    mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
+    mvwprintw(window, row, cpu_column,
+              Format::NormalizeString(to_string(cpu).substr(0, 4), 6).c_str());
+    mvwprintw(window, row, ram_column,
+              Format::NormalizeString(processes[i].Ram(), 7).c_str());
     mvwprintw(window, row, time_column,
               Format::ElapsedTime(processes[i].UpTime()).c_str());
-    mvwprintw(window, row, command_column,
-              processes[i].Command().substr(0, window->_maxx - 46).c_str());
+    mvwprintw(
+        window, row, command_column,
+        Format::NormalizeString(
+            (processes[i].Command().substr(0, window->_maxx - 46).c_str()),
+            (window->_maxx - 46))
+            .c_str());
   }
 }
 
@@ -100,9 +111,10 @@ void NCursesDisplay::Display(System& system, int n) {
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     box(system_window, 0, 0);
     box(process_window, 0, 0);
-    refresh();
+    // refresh();
     DisplaySystem(system, system_window);
-    DisplayProcesses(system.Processes(), process_window, n);
+    std::vector<Process> processes = system.Processes();
+    DisplayProcesses(processes, process_window, n);
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();
