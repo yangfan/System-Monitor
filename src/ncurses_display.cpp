@@ -111,7 +111,6 @@ void NCursesDisplay::Display(System& system, int n) {
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     box(system_window, 0, 0);
     box(process_window, 0, 0);
-    // refresh();
     DisplaySystem(system, system_window);
     std::vector<Process> processes = system.Processes();
     DisplayProcesses(processes, process_window, n);

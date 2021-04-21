@@ -17,10 +17,9 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-System::System() { Read(); }
+System::System() : cpu_(Processor()) { Read(); }
 
 void System::Read() {
-  // processes_.clear();
   std::vector<Process> processes;
   std::vector<int> pids = LinuxParser::Pids();
   for (int pid : pids) {
@@ -29,23 +28,24 @@ void System::Read() {
       processes.push_back(process);
     }
   }
+  // sort(processes.begin(), processes.end(), [](Process& pa, Process& pb) {
+  //   return (pb.CpuUtilization() < pa.CpuUtilization());
+  // });
+  std::sort(processes.begin(), processes.end());
+  std::sort(pids.begin(), pids.end());
   processes_ = processes;
-  // std::sort(processes_.begin(), processes_.end());
-
-  cpu_ = Processor();
   pids_ = pids;
 }
 
 void System::Update() {
   std::vector<int> pids = LinuxParser::Pids();
-  // if (pids.size() != pids_.size()) {
-  //   Read();
-  // } else {
-  // std::sort(processes_.begin(), processes_.end());
-  // }
+  std::sort(pids.begin(), pids.end());
+  if (pids != pids_) {
+    Read();
+  }
 }
 
-// TODO: Return the system's CPU
+// Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
@@ -57,22 +57,18 @@ Processor& System::Cpu() { return cpu_; }
 
 // Return a container composed of the system's processes
 vector<Process>& System::Processes() {
-  vector<Process> foundProcesses{};
-  // read process IDs from file system and generate Vector
-  vector<int> processIds = LinuxParser::Pids();
-  for (int p : processIds) {
-    Process pro{p};
-    foundProcesses.push_back(pro);
-  }
-
-  // sort the processes according to their CPU usage
-  sort(foundProcesses.begin(), foundProcesses.end(),
-       [](Process& pa, Process& pb) {
-         return (pb.CpuUtilization() < pa.CpuUtilization());
-       });
-  // update list of processes
-  processes_ = foundProcesses;
-
+  // vector<Process> foundProcesses{};
+  // vector<int> processIds = LinuxParser::Pids();
+  // for (int p : processIds) {
+  //   Process pro{p};
+  //   foundProcesses.push_back(pro);
+  // }
+  // sort(foundProcesses.begin(), foundProcesses.end(),
+  //      [](Process& pa, Process& pb) {
+  //        return (pb.CpuUtilization() < pa.CpuUtilization());
+  //      });
+  // processes_ = foundProcesses;
+  Update();
   return processes_;
 }
 // Return the system's kernel identifier (string)

@@ -7,9 +7,8 @@ class Processor {
  public:
   Processor();
   std::vector<float> cputime();
-  float Utilization();  // See src/processor.cpp
+  float Utilization();
 
-  // Declare any necessary private members
  private:
   std::chrono::seconds time_interval_sec = std::chrono::seconds(5);
   std::vector<float> cputime_start_;
