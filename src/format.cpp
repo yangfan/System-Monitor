@@ -32,7 +32,7 @@ std::string Format::NormalizeString(std::string input, size_t len) {
   if (len > input.size()) {
     std::string norm = input;
     for (size_t i = 0; i < len - input.size(); i++) {
-      norm.append("_");
+      norm.append(" ");
     }
     return norm;
   }
